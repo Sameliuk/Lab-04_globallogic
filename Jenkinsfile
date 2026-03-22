@@ -1,42 +1,61 @@
 pipeline {
     agent any
-
+    tools {
+        nodejs 'NodeJS'
+    }
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/твій-публічний-репо.git'
+                git url: 'https://github.com/Sameliuk/Lab-04_globallogic.git', branch: 'master'
             }
         }
 
-        stage('Build') {
+        stage('Prepare Folder') {
             steps {
-                sh 'gcc -o main main.c'
+                sh 'mkdir -p x64/Debug || echo Folder exists'
             }
         }
 
-        stage('Test') {
+        stage('Install Dependencies') {
             steps {
-                sh './main < input.txt > output.txt'
-                sh 'diff -u expected_output.txt output.txt || echo "Tests failed"'
+                sh 'npm install'
             }
         }
 
-        stage('Generate Report') {
+        stage('Run Tests') {
+            steps {
+                sh 'npm test'
+            }
+        }
+
+        stage('Publish Test Results') {
+            steps {
+                junit 'x64/Debug/test_report.xml'
+            }
+        }
+
+        stage('Generate PDF Report') {
             steps {
                 sh '''
                 echo "<html><body><h1>Test Report</h1><pre>" > report.html
-                cat output.txt >> report.html
+                cat x64/Debug/test_report.xml >> report.html
                 echo "</pre></body></html>" >> report.html
                 '''
 
                 sh 'wkhtmltopdf report.html report.pdf'
             }
         }
-    }
 
-    post {
-        always {
-            archiveArtifacts artifacts: 'report.pdf', allowEmptyArchive: false
+        stage('Archive PDF') {
+            steps {
+                archiveArtifacts artifacts: 'report.pdf', allowEmptyArchive: false
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
         }
     }
 }
