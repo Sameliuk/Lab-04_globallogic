@@ -41,7 +41,6 @@ pipeline {
                 cat x64/Debug/test_report.xml >> report.html
                 echo "</pre></body></html>" >> report.html
                 '''
-
                 sh 'node generate_pdf.js'
             }
         }

@@ -1,12 +1,14 @@
 const fs = require("fs")
-const pdf = require("html-pdf")
+const puppeteer = require("puppeteer")
 
-const html = fs.readFileSync("report.html", "utf8")
+;(async () => {
+    const html = fs.readFileSync("report.html", "utf8")
+    const browser = await puppeteer.launch({ args: ["--no-sandbox"] })
+    const page = await browser.newPage()
 
-pdf.create(html).toFile("report.pdf", (err, res) => {
-    if (err) {
-        console.error(err)
-        process.exit(1)
-    }
-    console.log("PDF created:", res.filename)
-})
+    await page.setContent(html, { waitUntil: "networkidle0" })
+    await page.pdf({ path: "report.pdf", format: "A4" })
+
+    await browser.close()
+    console.log("PDF successfully created.")
+})()
