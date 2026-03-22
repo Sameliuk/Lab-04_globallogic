@@ -1,0 +1,32 @@
+# Node modules
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
+dist/
+build/
+x64/Debug/
+
+# OS файли
+.DS_Store
+Thumbs.db
+
+# IDE / редактори
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Jest snapshot files
+*.snap
+
+# Test reports
+test_report.xml
+
+# Environment variables
+.env

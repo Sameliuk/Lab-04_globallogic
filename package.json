@@ -1,0 +1,16 @@
+{
+    "name": "lab04-node",
+    "version": "1.0.0",
+    "scripts": {
+        "test": "jest --ci --reporters=default --reporters=jest-junit",
+        "build": "echo Build step complete"
+    },
+    "devDependencies": {
+        "jest": "^29.0.0",
+        "jest-junit": "^15.0.0"
+    },
+    "jest-junit": {
+        "outputDirectory": "x64/Debug",
+        "outputName": "test_report.xml"
+    }
+}
