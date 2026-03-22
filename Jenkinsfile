@@ -42,7 +42,7 @@ pipeline {
                 echo "</pre></body></html>" >> report.html
                 '''
 
-                sh 'wkhtmltopdf report.html report.pdf'
+                sh 'node generate_pdf.js'
             }
         }
 
